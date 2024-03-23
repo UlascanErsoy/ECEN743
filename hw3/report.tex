@@ -1,0 +1,291 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2023
+
+
+% ready for submission
+\usepackage[final]{neurips_2023}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2023}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2023}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2023}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage[most]{tcolorbox}
+
+\bibliographystyle{plainnat}
+
+
+\title{ECEN 743 | Homework 3}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Muhammed U. Ersoy\\
+  M.S. ECEN Student\\
+  Texas A\&M University\\
+  \texttt{mue@tamu.edu} \\
+ }
+
+\begin{document}
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 1]
+    Let $x,y \in \mathbb{R}^n$. The triangle inequality states that $||x+y|| \leq ||x|| + ||y||$. Use this to
+    show that $ ||x - y|| \geq ||x|| - ||y||$.
+    \tcblower
+    \begin{aligned*}
+    \centering
+    Let $u = x - y$ and $v = y$ then using $\triangle\cdot$Inequality;\\
+    $$ ||u + v|| \leq ||u|| + ||v||$$ 
+    $$ ||(x-y) + y|| \leq ||(x-y)|| + ||y||$$
+    $$ || x || \leq ||x-y|| + ||y||$$\\
+    $$ ||x|| - ||y|| \leq ||x-y||$$
+    \end{aligned*}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 2]
+Consider an MDP with discount factor $\gamma \in (0,1)$. Show
+that
+\begin{equation}
+        \sup\limits_{\pi}||V_\pi||_{\infty} \leq \frac{\max_{s,a} |r(s,a)|}{(1 - \gamma)}
+\end{equation}
+\tcblower
+\begin{equation}
+    \begin{split}
+    V_{\pi}(s) \doteq \mathbb{E}_{\pi}[ \sum\limits_{t=0}^{\infty} \gamma^t r(s,a) | S_t = s, A_t = a] \\
+    = \sum\limits_{a} \pi(s,a) \sum\limits_{s'} P(s' | s, a) \sum\limits_{t=0}^{\infty} \gamma^t r(s,a)\\ 
+\end{split}
+\end{equation}
+We can take supremum of both sides which just equals to $\sup\limits_\pi V_\pi = V^*$, after this we can see that
+the optimal value function is bounded by the case where maximum reward was gained at every step. To show this we can
+take $\max_{s,a}$ of both sides.
+\begin{equation}
+    \sup\limits_\pi \max_{s,a} V_\pi = || V^* ||_{\infty} \leq \sum\limits_{t=0}^\infty \gamma^t \max_{s,a} | r(s,a) |
+\end{equation}
+Since $\gamma \leq 1$ we can simply the sum operator using geometric series;
+\begin{equation}
+    \sup\limits_\pi ||V_\pi||_\infty \leq \frac{\max_{s,a}|r(s,a)|}{(1 - \gamma)} 
+\end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 3]
+    Show that the Bellman operator $T$ is a monotone operator, i.e., for any $V_1, V_2 \in \mathbb{R}^{|S|}$ with
+    $V_1 \geq V_2$ (elementwise), $TV_1 \geq TV_2$.
+    \tcblower
+    Let's consider the Bellman optimality equation;
+    \begin{equation}
+        T V = R_\pi + \gamma \sum\limits_{s' \in S} P_\pi (s | s') V(s')
+    \end{equation}
+    if $TV_1 \geq TV_2$ then $TV_1 - TV_2 \geq 0$;
+    \begin{equation}
+        \begin{split}
+            R_\pi + \gamma \sum\limits_{s' \in S} P_\pi (s | s') V_1(s') - R_\pi - \gamma \sum\limits_{s' \in S} P_\pi (s | s') V_2(s') \geq 0\\
+            \gamma \sum\limits_{s' \in S} P_\pi (s | s') (V_1(s') - V_2(s')) \geq 0
+        \end{split}
+    \end{equation}
+
+and since $V_1 \geq V_2$ and $P_\pi$ is bounded by $[0,1]$ (only positive values) this expression must hold true. Hence bellman operator
+is a monotone operator.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 4]
+    Consider the function $f: \mathbb{R}^n \rightarrow \mathbb{R}^n, f(u) = Au$, where $A \in \mathbb{R}^n \times \mathbb{R}^n$.
+    Assume that the row sums of $A$ is strictly less than $1$, i.e., $\sum_{j}|a_{ij}| \leq \alpha < 1$. Show that $f(\cdot)$ is a contraction
+    mapping with respect to $||\cdot||_{\infty}$.
+    \tcblower
+    Let's remember the definition of a contraction;
+    \begin{equation}
+        \begin{split}
+            ||Au - Av||_\infty \leq \alpha ||u - v||_\infty\\
+    \end{split}
+    \end{equation}
+    where $0 \leq \alpha < 1$. We can refactor the left side as $Au - Av = A(u-v)$.Then recall that the supremum norm
+    of a vector is simplify the maximum absolute element of the vector. 
+    Then the left side can be expressed as;
+    \begin{equation}
+        \lfloor A(u - v) \rfloor_i = \sum_{j} a_{ij} (u_i - v_i)
+    \end{equation}
+    Taking the absolute value of both sides we get the following inequality;
+    \begin{equation}
+        | \lfloor A(u - v) \rfloor_i| \leq \sum_{j} |a_{ij}| |(u_i - v_i)|
+    \end{equation}
+    and since the the supremum norm is the maximum absolute element of a vector we can add the following;
+    \begin{equation}
+        | \lfloor A(u - v) \rfloor_i| \leq ||A(u-v)||_\infty \leq \sum_{j} |a_{ij}| ||(u - v)||_\infty 
+    \end{equation}
+    From the problem statement we know $\sum_{j}|a_{ij}| \leq \alpha < 1$;
+    \begin{equation}
+        ||A(u-v)||_\infty \leq \alpha ||(u - v)||_\infty 
+    \end{equation}
+    Thusfort $f(\cdot)$ is a contraction mapping with respect to the supremum norm.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 5]
+    Let $\mathit{U}$ be a given set, and $g_1: \mathit{U} \rightarrow \mathbb{R}$ and $g_2: \mathit{U} \rightarrow \mathbb{R}$ be two real-valued
+    functions on $\mathit{U}$. Also assume that both functions are bounded. Show that
+    \begin{equation}
+        |\max\limits_{u} g_1(u) - \max\limits_{u} g_2(u)| \leq \max\limits_{u} | g_1(u) - g_2(u)|
+    \end{equation}
+    \tcblower
+    Assume that $\max\limits_u g_1(u) \geq \max\limits_u g_2(u)$. Let $u^* = arg\max\limits_u g_1(u)$;
+    \begin{equation}
+        \begin{split}
+            |\max\limits_u g_1(u) - \max\limits_u g_2(u)| = g_1(u^*) - \max\limits_u g_2(u)\\
+            \leq g_1(u^*) - g_2(u^*)
+        \end{split}
+    \end{equation}
+    Based on our initial assumption this value must be necessarily positive thus we rewrite this inequality without loss of generality;
+    \begin{equation}
+        \begin{split}
+            |\max\limits_u g_1(u) - \max\limits_u g_2(u)| = g_1(u^*) - \max\limits_u g_2(u)\\
+            \leq |g_1(u^*) - g_2(u^*)|\\
+            \leq \max\limits_a |g_1(u) - g_2(u)|
+        \end{split}
+    \end{equation}
+    The same logic follows if we change our initial assumption to $\max\limits_u g_2(u) \geq \max\limits_u g_1(u)$.
+    Thus the initial statement must be true;
+    \begin{equation}
+        |\max\limits_u g_1(u) - \max\limits_u g_2(u)| \leq \max\limits_a |g_1(u) - g_2(u)|
+    \end{equation}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 6]
+    Consider the value iteration algorithm $V_{k+1} = TV_k$, with an arbitrary $V_0$, where $T$ is the Bellman operator.
+    \begin{enumerate}(a) Show that, for $n > m$
+        \begin{equation}
+            ||V_m - V_n||_\infty \leq \frac{\gamma^m}{(1-\gamma)}||V_0 - V_1||_\infty
+        \end{equation}
+    \end{enumerate}
+    \begin{enumerate}(b) Let $V^*$ be the optimal value function. Show that
+        \begin{equation}
+            ||V_m - V^*||_\infty \leq \frac{\gamma^m}{(1-\gamma)}||V_0 - V_1||_\infty
+        \end{equation}
+    \end{enumerate}
+    \begin{enumerate}(c) Show that
+        \begin{equation}
+            ||V_m - V^*||_\infty \leq \frac{\gamma}{(1-\gamma)}||V_{m-1} - V_m||_\infty
+        \end{equation}
+    \end{enumerate}
+    \tcblower
+    \begin{enumerate}(a) 
+        \begin{equation}
+            \begin{split}
+                ||V_m - V_n||_\infty = || T^m V_0 - T^n V_0 ||_\infty\\
+                \leq \gamma^n || T^{m-n} x_0- x_0 ||_\infty
+            \end{split}
+        \end{equation}
+        We can expand the right side as a sum;
+        \begin{equation}
+            \begin{align*}
+                \leq \gamma^m [ ||T^{n-m} V_0-T^{n-m-1} V_0||_\infty +\dots + ||T V_0-V_0||_\infty]\\
+                 \leq \gamma^m [ \sum\limits_{k=0}^{m-n-1} \gamma^k ] || V_1 - V_0 ||_\infty\\
+                 \leq \gamma^m [ \sum\limits_{k=0}^{\infty} \gamma^k ] || V_1 - V_0 ||_\infty
+            \end{align*}
+        \end{equation}
+        Using geometric series we get;
+        \begin{equation}
+            ||V_m - V_n||_\infty \leq \frac{\gamma^m}{1 - \gamma} || V_0 - V_1||_\infty
+        \end{equation}
+    \end{enumerate}
+    \begin{enumerate}(b)
+        Optimal Value function is the unique fixed-point of the bellman equation according to the banach fixed point theorem.
+        \begin{equation}
+            V^* = T V^* = T^n V_0, \ n \geq 0 
+        \end{equation}
+    Then based on (a), for $n > m$ the following holds;
+    \begin{equation}
+            ||V_m - V^*||_\infty = ||V_m - V_n||_\infty \leq \frac{\gamma^m}{1 - \gamma} || V_0 - V_1||_\infty
+        \end{equation}
+    \end{enumerate}
+    \begin{enumerate}(c)
+        \begin{equation}
+            || V_m - V_n ||_\infty \leq \frac{\gamma^m}{1 - \gamma} || V_0 - V_1||_\infty = \frac{\gamma^m}{1 - \gamma} || V_0 - T V_0||_\infty
+        \end{equation}
+        Let $n \rightarrow \infty$.
+        \begin{equation}
+            || V_m - V^* ||_\infty = || T V_{m-1} - T V^* ||_\infty \leq \gamma || V_{m-1} - V^* ||_\infty
+        \end{equation}
+        We can apply $\triangle\cdot$Inequality;
+        \begin{equation}
+                ||V_m - V^*||_\infty \leq \gamma [ || V_{m-1} - V_m ||_\infty + || V_m - V^* ||_\infty
+        \end{equation}
+        This can be re-arranged;
+        \begin{equation}
+            || V_m - V^* ||_\infty \leq \frac{\gamma}{1 - \gamma} || V_{m-1} - V_m ||_\infty
+        \end{equation}
+    \end{enumerate}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Question 7]
+    Let $\overline Q$ be such that $||\overline Q - Q^*||_\infty \leq \epsilon$, where $Q^*$ is the optimal $Q$-value function.
+    Let $\overline \pi$ be the greedy policy with respect to $\overline Q$, i.e., $\overline \pi(s) = arg\,max\limits_a \overline Q(s,a)$.
+    Show that
+    \begin{equation}
+        ||V^* - V_{\overline \pi}||_{\infty} \leq \frac{2\epsilon}{1- \gamma}
+    \end{equation}
+    \tcblower
+    We can fix state $s$ and let $a = \pi_Q(s)$. Then;
+    \begin{equation}
+        \begin{split}
+            V^*(s) - V_{\overline\pi}(s) &= Q^*(s, \pi^*(s)) - Q_{\overline\pi}(s,a)\\
+            &= Q^*(s, \pi^*(s)) - Q^*(s,a) + Q^*(s,a) - Q_{\overline\pi}(s,a)\\
+            &= Q^*(s, \pi^*(s)) - Q^*(s,a) + \gamma \mathbb{E}_{s' \sym P(\cdot|s,a)}[V^*(s') - V_{\overline\pi}(s')]\\
+            &\leq Q^*(s, \pi^*(s)) - \overline Q(s, \pi^*(s)) + \overline Q(s,a) - Q^*(s,a)\\
+            &+ \gamma \mathbb{E}_{s' \sym P(\cdot|s,a)}[V^*(s') - V_{\overline\pi}(s')]\\
+            &\leq 2 ||\overline Q - Q^* ||_\infty + \gamma || V^* - V_{\overline\pi} ||_\infty
+        \end{split}
+    \end{equation}
+    We can take the supremum norm of both sides; and norm of a supremum norm is itself since the norm of a scalar is itself;
+    \begin{equation}
+        \begin{split}
+            || V^*(s) - V_{\overline\pi}(s) ||_\infty \leq || 2 || \overline Q - Q^* ||_\infty + \gamma || V^* - V_{\overline\pi} ||_\infty ||_\infty\\
+            = 2 || \overline Q - Q^* ||_\infty + \gamma || V^* - V_{\overline\pi} ||_\infty
+        \end{split}
+    \end{equation}
+    We can use the fact that $||\overline Q - Q^*||_\infty \leq \epsilon$;
+    \begin{equation}
+        (1- \gamma) || V^*(s) - V_{\overline\pi}(s) ||_\infty \leq 2 || \overline Q - Q^* ||_\infty \leq 2 \epsilon 
+    \end{equation}
+    We can rearrange to get the inequality in the problem statement;
+    \begin{equation}
+        ||V^* - V_{\overline \pi}||_{\infty} \leq \frac{2\epsilon}{1- \gamma}
+    \end{equation}
+\end{tcolorbox}
+
+\bibliography{default}
+\end{document}
+
+
